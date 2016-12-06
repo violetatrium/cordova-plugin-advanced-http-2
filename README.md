@@ -2,13 +2,8 @@ Cordova Advanced HTTP
 =====================
 
 Cordova / Phonegap plugin for communicating with HTTP servers.  Supports iOS and Android.
-This is a fork of [Wymsee's Cordova-HTTP plugin](https://github.com/wymsee/cordova-HTTP).
+This is a fork of [silkimen's Cordova-Plugin-Advanced-HTTP plugin](https://github.com/silkimen/cordova-plugin-advanced-http).
 
-## Advantages over Javascript requests
-
- - Background threading - all requests are done in a background thread.
- - Handling of HTTP code 401 - read more at [Issue CB-2415](https://issues.apache.org/jira/browse/CB-2415).
- - SSL Pinning - read more at [LumberBlog](http://blog.lumberlabs.com/2012/04/why-app-developers-should-care-about.html).
 
 ## Updates
 
@@ -166,11 +161,6 @@ Execute a GET request.  Takes a URL, parameters, and headers.  See the [post](#p
         console.error(response.error);
     });
 
-### put
-Execute a PUT request.  Takes a URL, data, and headers.  See the [post](#post) documentation for details on what is returned on success and failure.
-
-### delete
-Execute a DELETE request.  Takes a URL, parameters, and headers.  See the [post](#post) documentation for details on what is returned on success and failure.
 
 ### uploadFile
 Uploads a file saved on the device.  Takes a URL, parameters, headers, filePath, and the name of the parameter to pass the file along as.  See the [post](#post) documentation for details on what is returned on success and failure.
