@@ -29,12 +29,8 @@
  * An HTTP Plugin for PhoneGap.
  */
 
-var pluginId = module.id.slice(0, module.id.indexOf('.'));
-var validSerializers = ['urlencoded', 'json'];
-
 var exec = require('cordova/exec');
-var angularIntegration = require(pluginId +'.angular-integration');
-var cookieHandler = require(pluginId + '.cookie-handler');
+var validSerializers = ['urlencoded', 'json'];
 
 // Thanks Mozilla: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_.22Unicode_Problem.22
 function b64EncodeUnicode(str) {
@@ -69,28 +65,6 @@ function checkSerializer(serializer) {
     return serializer[0];
 }
 
-function resolveCookieString(headers) {
-    var keys = Object.keys(headers);
-
-    for (var i = 0; i < keys.length; ++i) {
-        if (keys[i].match(/^set-cookie$/i)) {
-            return headers[keys[i]];
-        }
-    }
-
-    return null;
-}
-
-function getSuccessHandler(url, cb) {
-    return function(response) {
-        cookieHandler.setCookie(url, resolveCookieString(response.headers));
-        cb(response);
-    }
-}
-
-function getCookieHeader(url) {
-    return { Cookie: cookieHandler.getCookie(url) };
-}
 
 var http = {
     headers: {},
@@ -124,33 +98,24 @@ var http = {
         data = data || {};
         headers = headers || {};
         headers = mergeHeaders(this.headers, headers);
-        headers = mergeHeaders(getCookieHeader(url), headers);
-
-        return exec(getSuccessHandler(url, success), failure, 'CordovaHttpPlugin', 'post', [url, data, this.dataSerializer, headers]);
+        return exec(success, failure, 'CordovaHttpPlugin', 'post', [url, data, this.dataSerializer, headers]);
     },
     get: function (url, params, headers, success, failure) {
         params = params || {};
         headers = headers || {};
         headers = mergeHeaders(this.headers, headers);
-        headers = mergeHeaders(getCookieHeader(url), headers);
-
-        return exec(getSuccessHandler(url, success), failure, 'CordovaHttpPlugin', 'get', [url, params, headers]);
+        return exec(success, failure, 'CordovaHttpPlugin', 'get', [url, params, headers]);
     },
     head: function (url, params, headers, success, failure) {
         headers = mergeHeaders(this.headers, headers);
-        headers = mergeHeaders(getCookieHeader(url), headers);
-
-        return exec(getSuccessHandler(url, success), failure, 'CordovaHttpPlugin', 'head', [url, params, headers]);
+        return exec(success, failure, 'CordovaHttpPlugin', 'head', [url, params, headers]);
     },
     uploadFile: function (url, params, headers, filePath, name, success, failure) {
         headers = mergeHeaders(this.headers, headers);
-        headers = mergeHeaders(getCookieHeader(url), headers);
-
-        return exec(getSuccessHandler(url, success), failure, 'CordovaHttpPlugin', 'uploadFile', [url, params, headers, filePath, name]);
+        return exec(success, failure, 'CordovaHttpPlugin', 'uploadFile', [url, params, headers, filePath, name]);
     },
     downloadFile: function (url, params, headers, filePath, success, failure) {
         headers = mergeHeaders(this.headers, headers);
-        headers = mergeHeaders(getCookieHeader(url), headers);
 
         var win = function (result) {
             var entry = new (require('cordova-plugin-file.FileEntry'))();
@@ -167,5 +132,82 @@ var http = {
     }
 };
 
-angularIntegration.registerService(http);
+if (typeof angular !== 'undefined') {
+     angular.module('cordovaHTTP', []).factory('cordovaHTTP', function ($timeout, $q) {
+         function makePromise(fn, args, async) {
+             var deferred = $q.defer();
+ 
+             var success = function (response) {
+                 if (async) {
+                     $timeout(function () {
+                         deferred.resolve(response);
+                     });
+                 } else {
+                     deferred.resolve(response);
+                 }
+             };
+ 
+             var fail = function (response) {
+                if (async) {
+                     $timeout(function () {
+                         deferred.reject(response);
+                     });
+                 } else {
+                     deferred.reject(response);
+                 }
+             };
+ 
+             args.push(success);
+             args.push(fail);
+ 
+             fn.apply(http, args);
+ 
+             return deferred.promise;
+         }
+ 
+         var cordovaHTTP = {
+             getBasicAuthHeader: http.getBasicAuthHeader,
+             useBasicAuth: function (username, password) {
+                 return http.useBasicAuth(username, password);
+             },
+             setHeader: function (header, value) {
+                 return http.setHeader(header, value);
+             },
+             setDataSerializer: function (serializer) {
+                 return http.setParamSerializer(serializer);
+             },
+             enableSSLPinning: function (enable) {
+                 return makePromise(http.enableSSLPinning, [enable]);
+             },
+             acceptAllCerts: function (allow) {
+                 return makePromise(http.acceptAllCerts, [allow]);
+             },
+             validateDomainName: function (validate) {
+                 return makePromise(http.validateDomainName, [validate]);
+             },
+             post: function (url, data, headers) {
+                 return makePromise(http.post, [url, data, headers], true);
+             },
+             get: function (url, params, headers) {
+                 return makePromise(http.get, [url, params, headers], true);
+             },
+             put: function (url, data, headers) {
+                 return makePromise(http.put, [url, data, headers], true);
+             },
+             delete: function (url, params, headers) {
+                 return makePromise(http.delete, [url, params, headers], true);
+             },
+             head: function (url, params, headers) {
+                 return makePromise(http.head, [url, params, headers], true);
+             },
+             uploadFile: function (url, params, headers, filePath, name) {
+                 return makePromise(http.uploadFile, [url, params, headers, filePath, name], true);
+             },
+             downloadFile: function (url, params, headers, filePath) {
+                 return makePromise(http.downloadFile, [url, params, headers, filePath], true);
+             }
+         };
+         return cordovaHTTP;
+     });
+ }
 module.exports = http;
