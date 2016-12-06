@@ -1,10 +1,9 @@
 # Changelog
 
-## v1.4.0
+## v1.4.0 Previous changelog (cordova-plugin-advanced-http)
 
 - forked from "cordova-plugin-http" v1.2.0 (see https://github.com/wymsee/cordova-HTTP)
 - added configuration for data serializer
-- added HTTP methods PUT and DELETE
 
 # Previous changelog (cordova-plugin-http)
 
