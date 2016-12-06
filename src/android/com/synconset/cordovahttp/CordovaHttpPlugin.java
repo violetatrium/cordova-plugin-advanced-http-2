@@ -49,21 +49,6 @@ public class CordovaHttpPlugin extends CordovaPlugin {
             CordovaHttpGet get = new CordovaHttpGet(urlString, params, headers, callbackContext);
 
             cordova.getThreadPool().execute(get);
-        } else if (action.equals("put")) {
-            String urlString = args.getString(0);
-            JSONObject params = args.getJSONObject(1);
-            String serializerName = args.getString(2);
-            JSONObject headers = args.getJSONObject(3);
-            CordovaHttpPut put = new CordovaHttpPut(urlString, params, serializerName, headers, callbackContext);
-
-            cordova.getThreadPool().execute(put);
-        } else if (action.equals("delete")) {
-            String urlString = args.getString(0);
-            JSONObject params = args.getJSONObject(1);
-            JSONObject headers = args.getJSONObject(2);
-            CordovaHttpDelete delete = new CordovaHttpDelete(urlString, params, headers, callbackContext);
-
-            cordova.getThreadPool().execute(delete);
         } else if (action.equals("head")) {
             String urlString = args.getString(0);
             JSONObject params = args.getJSONObject(1);
