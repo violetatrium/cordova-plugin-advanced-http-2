@@ -62,12 +62,6 @@ function registerService(http) {
             get: function (url, params, headers) {
                 return makePromise(http.get, [url, params, headers], true);
             },
-            put: function (url, data, headers) {
-                return makePromise(http.put, [url, data, headers], true);
-            },
-            delete: function (url, params, headers) {
-                return makePromise(http.delete, [url, params, headers], true);
-            },
             head: function (url, params, headers) {
                 return makePromise(http.head, [url, params, headers], true);
             },
