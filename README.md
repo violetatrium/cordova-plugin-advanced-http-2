@@ -61,10 +61,6 @@ You can choose one of these two:
 
 Caution: `urlencoded` does not support serializing deep structures whereas `json` does.
 
-### clearCookies
-Clear the cookie store.
-
-    cordovaHTTP.clearCookies();
 
 ## Asynchronous Functions
 These functions all take success and error callbacks as their last 2 arguments.
