@@ -136,22 +136,6 @@ var http = {
 
         return exec(getSuccessHandler(url, success), failure, 'CordovaHttpPlugin', 'get', [url, params, headers]);
     },
-    put: function (url, data, headers, success, failure) {
-        data = data || {};
-        headers = headers || {};
-        headers = mergeHeaders(this.headers, headers);
-        headers = mergeHeaders(getCookieHeader(url), headers);
-
-        return exec(getSuccessHandler(url, success), failure, 'CordovaHttpPlugin', 'put', [url, data, this.dataSerializer, headers]);
-    },
-    delete: function (url, params, headers, success, failure) {
-        params = params || {};
-        headers = headers || {};
-        headers = mergeHeaders(this.headers, headers);
-        headers = mergeHeaders(getCookieHeader(url), headers);
-
-        return exec(getSuccessHandler(url, success), failure, 'CordovaHttpPlugin', 'delete', [url, params, headers]);
-    },
     head: function (url, params, headers, success, failure) {
         headers = mergeHeaders(this.headers, headers);
         headers = mergeHeaders(getCookieHeader(url), headers);
