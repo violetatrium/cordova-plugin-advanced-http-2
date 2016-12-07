@@ -304,7 +304,7 @@ public class HttpRequest {
       } };        
       try {
         SSLContext ctx = SSLContext.getInstance("TLSv1.2");
-        context.init(null, null, null);
+        ctx.init(null, null, null);
         SSLContext.setDefault(ctx);      
       } catch (GeneralSecurityException e) {
         IOException ioException = new IOException(
