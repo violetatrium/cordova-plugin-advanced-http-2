@@ -303,9 +303,14 @@ public class HttpRequest {
         }
       } };        
       try {
-        SSLContext ctx = SSLContext.getInstance("TLSv1.2");
-        ctx.init(null, null, null);
-        SSLContext.setDefault(ctx);      
+        SSLContext context = SSLContext.getInstance("TLS");
+        context.init(null, trustAllCerts, new SecureRandom());
+
+        if (android.os.Build.VERSION.SDK_INT < 20) {
+          TRUSTED_FACTORY = new TLSSocketFactory(context);
+        } else {
+          TRUSTED_FACTORY = context.getSocketFactory();
+        }
       } catch (GeneralSecurityException e) {
         IOException ioException = new IOException(
             "Security exception configuring SSL context");
