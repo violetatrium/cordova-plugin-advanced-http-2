@@ -303,8 +303,8 @@ public class HttpRequest {
         }
       } };        
       try {
-        SSLContext context = SSLContext.getInstance("TLS");
-        context.init(null, trustAllCerts, new SecureRandom());
+        SSLContext context = SSLContext.getInstance("TLSv1.2");
+        context.init(null, null, null);
 
         if (android.os.Build.VERSION.SDK_INT < 20) {
           TRUSTED_FACTORY = new TLSSocketFactory(context);
