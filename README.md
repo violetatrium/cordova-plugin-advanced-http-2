@@ -1,4 +1,4 @@
-Cordova Advanced HTTP
+Cordova Advanced HTTP 2
 =====================
 
 Cordova / Phonegap plugin for communicating with HTTP servers.  Supports iOS and Android.
@@ -14,9 +14,9 @@ Please check [CHANGELOG.md](CHANGELOG.md) for details about updating to a new ve
 The plugin conforms to the Cordova plugin specification, it can be installed
 using the Cordova / Phonegap command line interface.
 
-    phonegap plugin add cordova-plugin-advanced-http
+    phonegap plugin add cordova-plugin-advanced-http-2
 
-    cordova plugin add cordova-plugin-advanced-http
+    cordova plugin add cordova-plugin-advanced-http-2
 
 ## Usage
 
