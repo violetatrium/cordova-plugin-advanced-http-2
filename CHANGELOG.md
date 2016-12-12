@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.0
+
+- Removed PUT and DELETE methods from cordova-plugin-advanced-http (https://github.com/silkimen/cordova-plugin-advanced-http)
+- Android -> All connections use TLS 1.2
+
 ## v1.4.0 Previous changelog (cordova-plugin-advanced-http)
 
 - forked from "cordova-plugin-http" v1.2.0 (see https://github.com/wymsee/cordova-HTTP)
