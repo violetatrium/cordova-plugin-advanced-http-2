@@ -1,7 +1,7 @@
 Cordova Advanced HTTP 2
 =====================
 
-Cordova / Phonegap plugin for communicating with HTTP servers.  Supports iOS and Android.
+Cordova / Phonegap plugin for communicating with HTTP servers.  Supports iOS and Android (always with TLS 1.2).
 This is a fork of [silkimen's Cordova-Plugin-Advanced-HTTP plugin](https://github.com/silkimen/cordova-plugin-advanced-http).
 
 
