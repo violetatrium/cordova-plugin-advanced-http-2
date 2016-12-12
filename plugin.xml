@@ -7,7 +7,7 @@
     <name>Cordova HTTP plugin</name>
 
     <description>
-        Cordova / Phonegap plugin for communicating with HTTP servers using SSL pinning
+        Cordova / Phonegap plugin for communicating with HTTP servers using SSL pinning and TLS 1.2
 	 </description>
 
     <engines>
