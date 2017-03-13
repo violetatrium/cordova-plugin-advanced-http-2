@@ -102,10 +102,6 @@ public class CordovaHttpPlugin extends CordovaPlugin {
         }
         return true;
     }
-    
-    private void setTimeouts(int connectionTimeout, int readTimeout) {
-        // this.globalHeaders.put(header, value);
-    }
 
     private void enableSSLPinning(boolean enable) throws GeneralSecurityException, IOException {
         if (enable) {
