@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.6.1
+
+- Error fixes
+
 ## v1.6.0
 
 - Added option to set timeouts
