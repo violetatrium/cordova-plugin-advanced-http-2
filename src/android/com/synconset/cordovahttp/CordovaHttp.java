@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Iterator;
 
 import com.github.kevinsawicki.http.HttpRequest;
@@ -22,6 +23,8 @@ abstract class CordovaHttp {
 
     private static AtomicBoolean sslPinning = new AtomicBoolean(false);
     private static AtomicBoolean acceptAllCerts = new AtomicBoolean(false);
+    private static AtomicInteger connectionTimeout = new AtomicInteger(0);
+    private static AtomicInteger readTimeout = new AtomicInteger(0);
     private static AtomicBoolean validateDomainName = new AtomicBoolean(true);
 
     private String urlString;
@@ -59,6 +62,11 @@ abstract class CordovaHttp {
             sslPinning.set(false);
         }
     }
+    
+     public static void setTimeouts(int cTimeout, int rTimeout) {
+         connectionTimeout.set(cTimeout);
+         readTimeout.set(rTimeout);
+     }
 
     public static void validateDomainName(boolean accept) {
         validateDomainName.set(accept);
@@ -104,6 +112,13 @@ abstract class CordovaHttp {
         }
         return request;
     }
+    
+    protected HttpRequest setupTimeouts(HttpRequest request) {
+         request.connectTimeout(connectionTimeout.get());
+         request.readTimeout(readTimeout.get());
+ 
+         return request;
+     }
 
     protected void respondWithError(int status, String msg) {
         try {

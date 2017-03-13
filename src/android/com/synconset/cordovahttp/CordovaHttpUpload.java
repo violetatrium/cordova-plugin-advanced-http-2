@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.net.SocketTimeoutException;
 
 import org.apache.cordova.CallbackContext;
 
@@ -41,6 +42,7 @@ class CordovaHttpUpload extends CordovaHttp implements Runnable {
             HttpRequest request = HttpRequest.post(this.getUrlString());
 
             this.setupSecurity(request);
+            this.setupTimeouts(request);
             request.acceptCharset(CHARSET);
             request.headers(this.getHeadersMap());
 
@@ -98,6 +100,8 @@ class CordovaHttpUpload extends CordovaHttp implements Runnable {
                 this.respondWithError(0, "The host could not be resolved");
             } else if (e.getCause() instanceof SSLHandshakeException) {
                 this.respondWithError("SSL handshake failed");
+            } else if (e.getCause() instanceof SocketTimeoutException) {
+ +              this.respondWithError("Timeout");
             } else {
                 this.respondWithError("There was an error with the request");
             }
