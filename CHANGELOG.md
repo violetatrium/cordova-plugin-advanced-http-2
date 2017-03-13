@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.6.0
+
+- Added option to set timeouts
+
 ## v1.5.0
 
 - Removed PUT and DELETE methods from cordova-plugin-advanced-http (https://github.com/silkimen/cordova-plugin-advanced-http)
