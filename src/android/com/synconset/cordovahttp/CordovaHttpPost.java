@@ -59,7 +59,7 @@ class CordovaHttpPost extends CordovaHttp implements Runnable {
             } else if (e.getCause() instanceof SSLHandshakeException) {
                 this.respondWithError("SSL handshake failed");
             } else if (e.getCause() instanceof SocketTimeoutException) {
- +              this.respondWithError("Timeout");
+                this.respondWithError("Timeout");
             } else {
                 this.respondWithError("There was an error with the request");
             }
