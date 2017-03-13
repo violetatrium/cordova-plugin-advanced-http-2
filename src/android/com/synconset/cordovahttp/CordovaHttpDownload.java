@@ -10,6 +10,7 @@ import java.io.File;
 import java.net.UnknownHostException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.SocketTimeoutException;
 
 import javax.net.ssl.SSLHandshakeException;
 
@@ -32,6 +33,7 @@ class CordovaHttpDownload extends CordovaHttp implements Runnable {
         try {
             HttpRequest request = HttpRequest.get(this.getUrlString(), this.getParamsMap(), true);
             this.setupSecurity(request);
+            this.setupTimeouts(request);
             request.acceptCharset(CHARSET);
             request.headers(this.getHeadersMap());
             int code = request.code();
@@ -59,7 +61,9 @@ class CordovaHttpDownload extends CordovaHttp implements Runnable {
                 this.respondWithError(0, "The host could not be resolved");
             } else if (e.getCause() instanceof SSLHandshakeException) {
                 this.respondWithError("SSL handshake failed");
-            } else {
+            } else if (e.getCause() instanceof SocketTimeoutException) {
+ +              this.respondWithError("Timeout");
+            }else {
                 this.respondWithError("There was an error with the request");
             }
         }
