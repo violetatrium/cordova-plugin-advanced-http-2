@@ -64,6 +64,8 @@
 }
 
 - (void)setTimeouts:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* pluginResult = nil;
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -80,8 +82,6 @@
 - (void)post:(CDVInvokedUrlCommand*)command {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.securityPolicy = securityPolicy;
-
-    [manager.requestSerializer setTimeoutInterval:1.0];
 
     NSString *url = [command.arguments objectAtIndex:0];
     NSDictionary *parameters = [command.arguments objectAtIndex:1];
@@ -118,6 +118,8 @@
     [self setRequestHeaders: headers forManager: manager];
 
     CordovaHttpPlugin* __weak weakSelf = self;
+
+    [manager.requestSerializer setTimeoutInterval:1.0];
 
     manager.responseSerializer = [TextResponseSerializer serializer];
     [manager GET:url parameters:parameters progress:nil success:^(NSURLSessionTask *task, id responseObject) {
