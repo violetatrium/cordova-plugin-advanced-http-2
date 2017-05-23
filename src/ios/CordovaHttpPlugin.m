@@ -63,6 +63,10 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)setTimeouts:(CDVInvokedUrlCommand*)command {
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)validateDomainName:(CDVInvokedUrlCommand*)command {
     CDVPluginResult* pluginResult = nil;
     bool validate = [[command.arguments objectAtIndex:0] boolValue];
@@ -76,6 +80,9 @@
 - (void)post:(CDVInvokedUrlCommand*)command {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.securityPolicy = securityPolicy;
+
+    [manager.requestSerializer setTimeoutInterval:1.0];
+
     NSString *url = [command.arguments objectAtIndex:0];
     NSDictionary *parameters = [command.arguments objectAtIndex:1];
     NSString *serializerName = [command.arguments objectAtIndex:2];
